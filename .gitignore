@@ -1,0 +1,25 @@
+keys/my-creds.json
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+.vscode/
+
+module-1-docker-pgsql/ny_taxi_postgres_data/
+module-1-docker-pgsql/*.parquet
+module-1-docker-pgsql/*.csv
+module-1-docker-pgsql/postgres_data/
+>>>>>>> 488ce40ff0cd883fd5176f5131b7f4a838460a2d
+
+# Ignorar o executável do terraform
+terraform.exe
+
+# Ignorar a pasta de plugins/providers (é pesada e baixada no terraform init)
+.terraform/
+
+# Ignorar estados do terraform (contêm segredos)
+*.tfstate
+*.tfstate.backup
+.terraform.tfstate.lock.info

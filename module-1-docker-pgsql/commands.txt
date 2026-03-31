@@ -1,0 +1,58 @@
+docker run -it `
+    -e POSTGRES_USER="root" `
+    -e POSTGRES_PASSWORD="root" `
+    -e POSTGRES_DB="ny_taxi" `
+    -v "C:\Users\grbar\Desktop\Data Engineering\Zoomcamp\data-engineering-zoomcamp-26\module-1-docker-pgsql\postgres_data:/var/lib/postgresql/data" `
+    -p 5433:5432 `
+    postgres:13
+
+
+docker run it `
+    -p 8080:80 `
+    -e 'PGADMIN_DEFAULT_EMAIL=user@domain.com' `
+    -e 'PGADMIN_DEFAULT_PASSWORD=root' `
+    -d dpage/pgadmin4
+
+    ### NETWORK
+
+    docker network create pg-network
+
+docker run -it `
+    -e POSTGRES_USER="root" `
+    -e POSTGRES_PASSWORD="root" `
+    -e POSTGRES_DB="ny_taxi" `
+    -v "C:\Users\grbar\Desktop\Data Engineering\Zoomcamp\data-engineering-zoomcamp-26\module-1-docker-pgsql\postgres_data:/var/lib/postgresql/data" `
+    -p 5433:5432 `
+    --network=pg-network `
+    --name pg-database `
+    postgres:13
+
+docker run -it `
+    -p 8080:80 `
+    -e 'PGADMIN_DEFAULT_EMAIL=admin@admin.com' `
+    -e 'PGADMIN_DEFAULT_PASSWORD=root' `
+    --network=pg-network `
+    --name pgadmin `
+    -d dpage/pgadmin4
+
+python ingestion_data.py `
+    --user=root `
+    --password=root `
+    --host=localhost `
+    --port=5433 `
+    --db=ny_taxi `
+    --table_name=yellow_taxi_data `
+    --url=$URL
+
+docker build -t taxi_ingest:v001 .
+
+docker run -it `
+    --network=pg-network `
+    taxi_ingest:v001 `
+    --user=root `
+    --password=root `
+    --host=pgdatabase `
+    --port=5432 `
+    --db=ny_taxi `
+    --table_name=yellow_taxi_data `
+    --url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
